@@ -1,18 +1,21 @@
 package dev.adarsh.productservice.services;
 
 import dev.adarsh.productservice.dtos.ProductDto;
+import dev.adarsh.productservice.models.Product;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 public interface ProductService {
 
-    String getAllProduct();
+    List<Product> getAllProduct();
 
 
-    String getSingleProduct( Long productId);
+    Product getSingleProduct( Long productId);
 
-    String addNewProduct( ProductDto productDto);
+    Product addNewProduct( ProductDto product);
 
-    String updateProduct( Long productId);
+    Product updateProduct( Long productId, Product product);
 
-    String deleteProduct( Long productId);
+    boolean deleteProduct( Long productId);
 }

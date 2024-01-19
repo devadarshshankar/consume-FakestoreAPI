@@ -5,17 +5,19 @@ import dev.adarsh.productservice.models.Product;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
     List<Product> getAllProduct();
 
 
-    Product getSingleProduct( Long productId);
+    Optional<Product> getSingleProduct(Long productId);
 
     Product addNewProduct( ProductDto product);
 
     Product updateProduct( Long productId, Product product);
+    Product replaceProduct(Long productId,Product product);
 
     boolean deleteProduct( Long productId);
 }

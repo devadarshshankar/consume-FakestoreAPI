@@ -1,7 +1,10 @@
 package dev.adarsh.productservice.controllers;
 
+import dev.adarsh.productservice.dtos.ErrorResponseDto;
 import dev.adarsh.productservice.dtos.GetSingleResponseDto;
 import dev.adarsh.productservice.dtos.ProductDto;
+import dev.adarsh.productservice.exceptions.NotFoundException;
+import dev.adarsh.productservice.models.Category;
 import dev.adarsh.productservice.models.Product;
 import dev.adarsh.productservice.services.ProductService;
 import org.apache.coyote.Response;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products") //-->we can remove "/products" from all the mapping now
@@ -27,23 +31,25 @@ public class ProductController {
     @GetMapping()
     public List<Product> getAllProduct(){
         return productService.getAllProduct();
-//        return "Getting all product ";
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId){
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId) throws NotFoundException{
 
         MultiValueMap<String,String> headers=new LinkedMultiValueMap<>();
         headers.add("auth-token","noToken4uHeyHey");
-        ResponseEntity<Product> response=new ResponseEntity<>(productService.getSingleProduct(productId),
+
+        Optional<Product> productOptional= productService.getSingleProduct(productId);
+        if(productOptional.isEmpty()){
+            throw  new NotFoundException("No Product with product id: "+productId);
+        }
+
+        ResponseEntity<Product> response=new ResponseEntity<>
+                (productService.getSingleProduct(productId).get(),
                 headers,
                 HttpStatus.NOT_FOUND);
         return response;
-//        GetSingleResponseDto responseDto=new GetSingleResponseDto();
-//        responseDto.setProduct(productService.getSingleProduct(productId));
-//        return responseDto;
-       // return productService.getSingleProduct(productId);
-        //return "returning single product with id: "+productId;
+
     }
 
     @PostMapping()
@@ -54,16 +60,34 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public String updateProduct(@PathVariable("productId") Long productId,@RequestBody ProductDto productDto){
-        return "Updating the product with id: "+productId+" with body: "+productDto;
+    public Product updateProduct(@PathVariable("productId") Long productId,@RequestBody ProductDto productDto){
+        Product product=new Product();
+        product.setId(productDto.getId());
+        product.setCategory(new Category());
+        product.getCategory().setName(productDto.getCategory());
+        product.setTitle(productDto.getTitle());
+        product.setPrice(productDto.getPrice());
+        product.setImageUrl(productDto.getImage());
+
+        return productService.replaceProduct(productId,product);
     }
     @PatchMapping("/{productId}")
-    public String updateProductviaPatch(@PathVariable("productId") Long productId,@RequestBody ProductDto productDto){
-        return "Updating the product with id: "+productId+" with body: "+productDto;
+    public Product updateProductviaPatch(@PathVariable("productId") Long productId,@RequestBody ProductDto productDto){
+        Product product=new Product();
+        product.setId(productDto.getId());
+        product.setCategory(new Category());
+        product.getCategory().setName(productDto.getCategory());
+        product.setTitle(productDto.getTitle());
+        product.setPrice(productDto.getPrice());
+        product.setImageUrl(productDto.getImage());
+
+        return productService.updateProduct(productId,product);
     }
 
     @DeleteMapping("/{productId}")
     public String deleteProduct(@PathVariable("productId") Long productId){
         return "Deleting a product with id: "+productId;
     }
+
+
 }

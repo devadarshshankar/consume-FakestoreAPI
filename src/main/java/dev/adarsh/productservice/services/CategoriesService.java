@@ -1,12 +1,13 @@
 package dev.adarsh.productservice.services;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import dev.adarsh.productservice.models.Product;
+
+import java.util.List;
 
 public interface CategoriesService {
 
     String getAllCategory();
 
 
-    String getProductsInCategory(long productId);
+    List<Product> getProductsInCategory(String categoryName);
 }

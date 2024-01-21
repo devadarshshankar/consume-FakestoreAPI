@@ -6,6 +6,7 @@ import dev.adarsh.productservice.dtos.ProductDto;
 import dev.adarsh.productservice.exceptions.NotFoundException;
 import dev.adarsh.productservice.models.Category;
 import dev.adarsh.productservice.models.Product;
+import dev.adarsh.productservice.repositories.ProductRepository;
 import dev.adarsh.productservice.services.ProductService;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,10 @@ import java.util.Optional;
 @RequestMapping("/products") //-->we can remove "/products" from all the mapping now
 public class ProductController {
     private ProductService productService;
-    public ProductController(ProductService productService){
+    private ProductRepository productRepository;
+    public ProductController(ProductService productService, ProductRepository productRepository){
         this.productService=productService;
+        this.productRepository=productRepository;
     }
 
    // @GetMapping("/products")
@@ -54,9 +57,15 @@ public class ProductController {
 
     @PostMapping()
     public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto product){
+        Product newProduct= new Product();
+        newProduct.setDescription(product.getDescription());
+        newProduct.setImageUrl(product.getImage());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setTitle(product.getTitle());
+
+        newProduct=productRepository.save(newProduct);
         ResponseEntity<Product> response=new ResponseEntity<>(productService.addNewProduct(product),HttpStatus.OK);
         return response;
-        //        return "Adding new Product with "+productDto;
     }
 
     @PutMapping("/{productId}")

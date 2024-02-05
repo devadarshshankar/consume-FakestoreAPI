@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Product save(Product product);
+    Product findProductById(Long id);
 }

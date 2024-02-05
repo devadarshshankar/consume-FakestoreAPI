@@ -25,4 +25,5 @@ public class CategoryController {
         return categoriesService.getProductsInCategory(categoryName);
     }
 
+
 }

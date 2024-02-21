@@ -1,6 +1,7 @@
 package dev.adarsh.productservice.services;
 
 import dev.adarsh.productservice.dtos.ProductDto;
+import dev.adarsh.productservice.exceptions.NotFoundException;
 import dev.adarsh.productservice.models.Product;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ public interface ProductService {
     List<Product> getAllProduct();
 
 
-    Optional<Product> getSingleProduct(Long productId);
+    Optional<Product> getSingleProduct(Long productId) throws NotFoundException;
 
     Product addNewProduct( ProductDto product);
 

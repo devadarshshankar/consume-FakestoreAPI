@@ -64,7 +64,7 @@ public class ProductController {
         newProduct.setTitle(product.getTitle());
 
         newProduct=productRepository.save(newProduct);
-        ResponseEntity<Product> response=new ResponseEntity<>(productService.addNewProduct(product),HttpStatus.OK);
+        ResponseEntity<Product> response=new ResponseEntity<>(newProduct,HttpStatus.OK);
         return response;
     }
 

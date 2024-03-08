@@ -6,6 +6,7 @@ import dev.adarsh.productservice.dtos.ProductDto;
 import dev.adarsh.productservice.models.Category;
 import dev.adarsh.productservice.models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -18,7 +19,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
-@Service
+@Service(value = "fakeStoreProductService")
+@Primary
 public class FakeStoreProductServiceImp implements ProductService{
     private FakeStoreClient fakeStoreClient;
     public FakeStoreProductServiceImp( FakeStoreClient fakeStoreClient){

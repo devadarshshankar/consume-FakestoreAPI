@@ -9,6 +9,7 @@ import dev.adarsh.productservice.models.Product;
 import dev.adarsh.productservice.repositories.ProductRepository;
 import dev.adarsh.productservice.services.ProductService;
 import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,7 +26,7 @@ import java.util.Optional;
 public class ProductController {
     private ProductService productService;
     private ProductRepository productRepository;
-    public ProductController(ProductService productService, ProductRepository productRepository){
+    public ProductController(@Qualifier(value = "fakeStoreProductService") ProductService productService, ProductRepository productRepository){
         this.productService=productService;
         this.productRepository=productRepository;
     }
@@ -33,7 +34,9 @@ public class ProductController {
    // @GetMapping("/products")
     @GetMapping()
     public List<Product> getAllProduct(){
-        return productService.getAllProduct();
+        List<Product> products=productService.getAllProduct();
+//        products.get(0).setPrice(100);
+        return products;
     }
 
     @GetMapping("/{productId}")

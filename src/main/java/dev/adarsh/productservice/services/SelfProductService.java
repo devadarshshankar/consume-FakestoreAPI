@@ -6,11 +6,13 @@ import dev.adarsh.productservice.models.Category;
 import dev.adarsh.productservice.models.Product;
 import dev.adarsh.productservice.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
+@Service(value = "selfProductService")
 public class SelfProductService implements ProductService{
     private ProductRepository productRepository;
     @Override
